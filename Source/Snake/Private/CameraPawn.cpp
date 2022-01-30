@@ -17,7 +17,7 @@ ACameraPawn::ACameraPawn()
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>("CameraComponent");
 	CameraComponent->SetupAttachment(SpringArmComponent);
 
-	SpringArmComponent->SetRelativeLocation(FVector(0.0f, 0.0f, 1700.0f));
+	SpringArmComponent->SetRelativeLocation(FVector(0.0f, 0.0f, 1500.0f));
 	SpringArmComponent->SetRelativeRotation(FRotator(-90.0f, 0.0f, 0.0f));
 }
 
