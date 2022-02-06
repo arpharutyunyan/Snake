@@ -6,8 +6,9 @@
 #include "GameFramework/Pawn.h"
 #include "EatPawn.generated.h"
 
-class UBoxComponent;
+class USceneComponent;
 class UStaticMeshComponent;
+class UMaterialInstanceDynamic;
 
 UCLASS()
 class SNAKE_API AEatPawn : public APawn
@@ -18,18 +19,27 @@ public:
 	// Sets default values for this pawn's properties
 	AEatPawn();
 
+	
+	void SetMaterialColor();
+	
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Component")
-		UBoxComponent* BoxComponent;
+	UPROPERTY(VisibleAnywhere, Category = "Component")
+		USceneComponent* SceneComponent;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Component")
-		UStaticMeshComponent* StaticMesh;
+	UPROPERTY(VisibleAnywhere, Category = "Component")
+		UStaticMeshComponent* StaticMeshComponent;
+
+	FLinearColor Color;
+	UMaterialInstanceDynamic* MID;
+	
+	
+
 
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
 };

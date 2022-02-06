@@ -6,6 +6,7 @@
 #include "GameFramework/Pawn.h"
 #include "CameraPawn.generated.h"
 
+class USceneComponent;
 class USpringArmComponent;
 class UCameraComponent;
 
@@ -22,6 +23,9 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	UPROPERTY(VisibleAnywhere, Category = "Component")
+		USceneComponent* SceneComponent;
+
 	UPROPERTY(EditDefaultsOnly, Category = "Components")
 		USpringArmComponent* SpringArmComponent;
 
@@ -31,4 +35,7 @@ protected:
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	//TSubclassOf<AEatPawn> EatClass;
+	
 };
