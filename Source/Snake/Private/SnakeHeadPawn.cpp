@@ -19,16 +19,12 @@ ASnakeHeadPawn::ASnakeHeadPawn()
 	PrimaryActorTick.bCanEverTick = true;
 
 	UE_LOG(HeadPawn, Display, TEXT("constructor"));
-	//SceneComponent = CreateDefaultSubobject<USceneComponent>("SceneComponent");
-	//SetRootComponent(SceneComponent);
-	//SceneComponent->SetRelativeLocation(FVector(0.0f, 0.0f, 1500.0f));
-
-	CameraViewer();
-
+	SceneComponent = CreateDefaultSubobject<USceneComponent>("SceneComponent");
+	SetRootComponent(SceneComponent);
+	
 	HeadMesh = CreateDefaultSubobject<UStaticMeshComponent>("HeadMesh");
-	SetRootComponent(HeadMesh);
-	HeadMesh->SetRelativeLocation(FVector(0.0f, 0.0f, 11.5f));
-	//HeadMesh->SetupAttachment(GetRootComponent());	
+	//HeadMesh->SetRelativeLocation(FVector(0.0f, 0.0f, 11.5f));
+	HeadMesh->SetupAttachment(GetRootComponent());	
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> HeadStaticMesh(TEXT("StaticMesh'/Engine/EditorMeshes/EditorCube.EditorCube'"));
 	if (HeadStaticMesh.Succeeded())
@@ -43,8 +39,11 @@ ASnakeHeadPawn::ASnakeHeadPawn()
 		HeadMesh->SetMaterial(0, DynMaterial);
 	}
 
-	SetActorScale3D(FVector(0.3f, 0.3f, 0.001f));
+	SetActorScale3D(FVector(0.3f, 0.3f, 0.1f));
 	
+	HeadMesh->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	HeadMesh->SetCollisionObjectType(ECC_Pawn);
+	HeadMesh->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
 }
 
 // Called when the game starts or when spawned
@@ -74,10 +73,8 @@ void ASnakeHeadPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	//UE_LOG(HeadPawn, Display, TEXT("if input"));
 	if (PlayerInputComponent)
 	{
-		//UE_LOG(HeadPawn, Display, TEXT("input"));
 		PlayerInputComponent->BindAxis("MoveForward", this, &ASnakeHeadPawn::MoveForward);
 		PlayerInputComponent->BindAxis("MoveRight", this, &ASnakeHeadPawn::MoveRight);
 	}
@@ -93,7 +90,7 @@ void ASnakeHeadPawn::MoveRight(float Amount)
 	MovementDiraction.Y = FMath::Clamp(Amount, -1.0f, 1.0f);
 }
 
-void ASnakeHeadPawn::CameraViewer()
+/*void ASnakeHeadPawn::CameraViewer()
 {
 	UE_LOG(HeadPawn, Display, TEXT("arm"));
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>("SpringArm");
@@ -106,4 +103,4 @@ void ASnakeHeadPawn::CameraViewer()
 	UE_LOG(HeadPawn, Display, TEXT("location"));
 	SpringArm->SetRelativeRotation(FRotator(-90.0f, 0.0f, 0.0f));
 	SpringArm->SetRelativeLocation(FVector(0.0f, 0.0f, 1500.0f));
-}
+}*/
