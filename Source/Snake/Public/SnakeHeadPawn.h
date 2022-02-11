@@ -4,20 +4,28 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
-#include "CameraPawn.generated.h"
+#include "SnakeHeadPawn.generated.h"
 
 class USceneComponent;
+class UStaticMeshComponent;
+class UMaterialInstanceDynamic;
 class UCameraComponent;
 class USpringArmComponent;
 
 UCLASS()
-class SNAKE_API ACameraPawn : public APawn
+class SNAKE_API ASnakeHeadPawn : public APawn
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this pawn's properties
-	ACameraPawn();
+	ASnakeHeadPawn();
+
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
+public:	
 
 	UPROPERTY(VisibleAnywhere)
 		USceneComponent* SceneComponent;
@@ -28,15 +36,23 @@ public:
 	UPROPERTY(VisibleAnywhere)
 		USpringArmComponent* SpringArm;
 
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+	UPROPERTY(VisibleAnywhere)
+		UStaticMeshComponent* HeadMesh;
 
-public:	
+	UPROPERTY(VisibleAnywhere)
+		UMaterialInstanceDynamic* DynMaterial;
+
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	void MoveForward(float Amount);
+	void MoveRight(float Amount);
+
+private:
+	void CameraViewer();
+	FVector MovementDiraction;
+	float Speed = 100.0f;
 };
