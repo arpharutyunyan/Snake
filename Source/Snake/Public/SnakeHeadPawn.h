@@ -11,6 +11,7 @@ class UStaticMeshComponent;
 class UMaterialInstanceDynamic;
 class UCameraComponent;
 class USpringArmComponent;
+class ABaseStaticMeshActor;
 
 UCLASS()
 class SNAKE_API ASnakeHeadPawn : public APawn
@@ -31,12 +32,6 @@ public:
 		USceneComponent* SceneComponent;
 
 	UPROPERTY(VisibleAnywhere)
-		UCameraComponent* Camera;
-
-	UPROPERTY(VisibleAnywhere)
-		USpringArmComponent* SpringArm;
-
-	UPROPERTY(VisibleAnywhere)
 		UStaticMeshComponent* HeadMesh;
 
 	UPROPERTY(VisibleAnywhere)
@@ -50,9 +45,11 @@ public:
 
 	void MoveForward(float Amount);
 	void MoveRight(float Amount);
+	void EatFruit();
 
 private:
-	void CameraViewer();
+
 	FVector MovementDiraction;
 	float Speed = 100.0f;
+	int32 Score = 0;
 };

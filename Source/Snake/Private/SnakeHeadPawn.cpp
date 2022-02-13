@@ -3,12 +3,8 @@
 
 #include "SnakeHeadPawn.h"
 #include <Components/StaticMeshComponent.h>
-#include <Components/InputComponent.h>
-#include "CameraPawn.h"
 #include <Components/SceneComponent.h>
-#include <Camera/CameraComponent.h>
-#include <GameFramework/SpringArmComponent.h>
-#include <GameFramework/Controller.h>
+#include <Components/InputComponent.h>
 
 DEFINE_LOG_CATEGORY_STATIC(HeadPawn, All, All);
 
@@ -23,7 +19,6 @@ ASnakeHeadPawn::ASnakeHeadPawn()
 	SetRootComponent(SceneComponent);
 	
 	HeadMesh = CreateDefaultSubobject<UStaticMeshComponent>("HeadMesh");
-	//HeadMesh->SetRelativeLocation(FVector(0.0f, 0.0f, 11.5f));
 	HeadMesh->SetupAttachment(GetRootComponent());	
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> HeadStaticMesh(TEXT("StaticMesh'/Engine/EditorMeshes/EditorCube.EditorCube'"));
@@ -44,6 +39,7 @@ ASnakeHeadPawn::ASnakeHeadPawn()
 	HeadMesh->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	HeadMesh->SetCollisionObjectType(ECC_Pawn);
 	HeadMesh->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
+
 }
 
 // Called when the game starts or when spawned
@@ -52,7 +48,6 @@ void ASnakeHeadPawn::BeginPlay()
 	Super::BeginPlay();
 	
 	UE_LOG(HeadPawn, Display, TEXT("beginplay"));
-	//GetWorld()->SpawnActor<ACameraPawn>(ACameraPawn::StaticClass());
 }
 
 // Called every frame
@@ -90,17 +85,9 @@ void ASnakeHeadPawn::MoveRight(float Amount)
 	MovementDiraction.Y = FMath::Clamp(Amount, -1.0f, 1.0f);
 }
 
-/*void ASnakeHeadPawn::CameraViewer()
+void ASnakeHeadPawn::EatFruit()
 {
-	UE_LOG(HeadPawn, Display, TEXT("arm"));
-	SpringArm = CreateDefaultSubobject<USpringArmComponent>("SpringArm");
-	SpringArm->SetupAttachment(GetRootComponent());
+	Score++;
+	UE_LOG(HeadPawn, Display, TEXT("Eat fruit score: %i"), Score);
+}
 
-	UE_LOG(HeadPawn, Display, TEXT("camera"));
-	Camera = CreateDefaultSubobject<UCameraComponent>("Camera");
-	Camera->SetupAttachment(SpringArm);
-
-	UE_LOG(HeadPawn, Display, TEXT("location"));
-	SpringArm->SetRelativeRotation(FRotator(-90.0f, 0.0f, 0.0f));
-	SpringArm->SetRelativeLocation(FVector(0.0f, 0.0f, 1500.0f));
-}*/
