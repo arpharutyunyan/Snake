@@ -14,6 +14,8 @@ class SNAKE_API ASnakeGameModeBase : public AGameModeBase
 public:
 	ASnakeGameModeBase();
 
+	void GameOver();
+
 protected:
 	virtual void StartPlay();
 

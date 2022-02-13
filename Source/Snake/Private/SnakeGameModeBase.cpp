@@ -6,6 +6,7 @@
 #include <Kismet/GameplayStatics.h>
 #include <Camera/CameraActor.h>
 
+DEFINE_LOG_CATEGORY_STATIC(GameMode, All, All);
 
 ASnakeGameModeBase::ASnakeGameModeBase()
 {
@@ -27,4 +28,10 @@ void ASnakeGameModeBase::StartPlay()
 		Camera->SetOwner(Player);
 		Player->SetViewTarget(Camera);
 	}
+}
+
+void ASnakeGameModeBase::GameOver()
+{
+	UGameplayStatics::SetGamePaused(this, true);
+	UE_LOG(GameMode, Display, TEXT("Game over."));
 }

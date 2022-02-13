@@ -4,17 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "OverlapedActors.h"
-#include "Fruit.generated.h"
+#include "DeadZone.generated.h"
 
 
 UCLASS()
-class SNAKE_API AFruit : public AOverlapedActors
+class SNAKE_API ADeadZone : public AOverlapedActors
 {
 	GENERATED_BODY()
 
 public:
-	AFruit();
-
 	virtual void OverlapedWithSnakeHead(class ASnakeHeadPawn* SnakeHead) override;
-	
 };

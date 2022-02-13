@@ -50,6 +50,6 @@ public:
 private:
 
 	FVector MovementDiraction;
-	float Speed = 100.0f;
+	float Speed = 200.0f;
 	int32 Score = 0;
 };
