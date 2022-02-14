@@ -3,6 +3,7 @@
 
 #include "Fruit.h"
 #include "SnakeHeadPawn.h"
+#include "SnakeGameModeBase.h"
 
 DEFINE_LOG_CATEGORY_STATIC(Fruit, All, All);
 
@@ -16,9 +17,31 @@ AFruit::AFruit()
 	}
 
 	SetActorScale3D(FVector(0.3f, 0.3f, 0.1f));
+
+	SetColor();
 }
 
 void AFruit::OverlapedWithSnakeHead(class ASnakeHeadPawn* SnakeHead)
 {
 	SnakeHead->EatFruit();
+
+	ASnakeGameModeBase* GameMode = Cast<ASnakeGameModeBase>(GetWorld()->GetAuthGameMode());
+	if (GameMode)
+	{
+		GameMode->SpawnFruit();
+	}
+
+	Destroy();
+}
+
+void AFruit::SetColor()
+{
+	Color = FLinearColor::MakeRandomColor();
+
+	MID = Mesh->CreateAndSetMaterialInstanceDynamic(0);
+	if (MID)
+	{
+		MID->SetVectorParameterValue("Color", Color);
+	}
+
 }

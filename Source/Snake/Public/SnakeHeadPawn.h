@@ -12,6 +12,7 @@ class UMaterialInstanceDynamic;
 class UCameraComponent;
 class USpringArmComponent;
 class ABaseStaticMeshActor;
+class AFruit;
 
 UCLASS()
 class SNAKE_API ASnakeHeadPawn : public APawn
@@ -46,6 +47,8 @@ public:
 	void MoveForward(float Amount);
 	void MoveRight(float Amount);
 	void EatFruit();
+
+	TArray<AFruit*> Tails;
 
 private:
 

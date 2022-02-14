@@ -5,6 +5,7 @@
 #include "SnakeHeadPawn.h"
 #include <Kismet/GameplayStatics.h>
 #include <Camera/CameraActor.h>
+#include <Fruit.h>
 
 DEFINE_LOG_CATEGORY_STATIC(GameMode, All, All);
 
@@ -28,10 +29,24 @@ void ASnakeGameModeBase::StartPlay()
 		Camera->SetOwner(Player);
 		Player->SetViewTarget(Camera);
 	}
+
+	SpawnFruit();
 }
 
 void ASnakeGameModeBase::GameOver()
 {
 	UGameplayStatics::SetGamePaused(this, true);
 	UE_LOG(GameMode, Display, TEXT("Game over."));
+}
+
+void ASnakeGameModeBase::SpawnFruit()
+{
+	float SpawnX = FMath::FRandRange(MinX, MaxX);
+	float SpawnY = FMath::FRandRange(MinY, MaxY);
+	FVector Location(SpawnX, SpawnY, SpawnZ);
+		
+	FTransform SpawnLocation = FTransform(Location);
+
+	AFruit* Fruit = GetWorld()->SpawnActor<AFruit>(AFruit::StaticClass(), SpawnLocation, FActorSpawnParameters());
+	Fruit->SetColor();
 }

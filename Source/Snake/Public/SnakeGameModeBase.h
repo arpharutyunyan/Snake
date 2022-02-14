@@ -15,8 +15,17 @@ public:
 	ASnakeGameModeBase();
 
 	void GameOver();
+	void SpawnFruit();
 
 protected:
 	virtual void StartPlay();
+
+	float MinX = -690.0f;
+	float MaxX = 690.0f;
+
+	float MinY = -690.0f;
+	float MaxY = 690.0f;
+
+	float SpawnZ = 10.0f;
 
 };

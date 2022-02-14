@@ -5,6 +5,8 @@
 #include <Components/StaticMeshComponent.h>
 #include <Components/SceneComponent.h>
 #include <Components/InputComponent.h>
+#include "Fruit.h"
+#include "SnakeGameModeBase.h"
 
 DEFINE_LOG_CATEGORY_STATIC(HeadPawn, All, All);
 
@@ -89,5 +91,6 @@ void ASnakeHeadPawn::EatFruit()
 {
 	Score++;
 	UE_LOG(HeadPawn, Display, TEXT("Eat fruit score: %i"), Score);
+
 }
 
