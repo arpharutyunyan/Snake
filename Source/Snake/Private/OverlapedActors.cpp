@@ -47,7 +47,7 @@ void AOverlapedActors::Tick(float DeltaTime)
 
 void AOverlapedActors::NotifyActorBeginOverlap(AActor* OtherActor)
 {
-	UE_LOG(Overlap, Display, TEXT("begin overlap"));
+	//UE_LOG(Overlap, Display, TEXT("begin overlap"));
 	ASnakeHeadPawn* SnakeHead = Cast<ASnakeHeadPawn>(OtherActor);
 	if (SnakeHead)
 	{

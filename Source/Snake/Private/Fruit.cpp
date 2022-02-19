@@ -18,30 +18,27 @@ AFruit::AFruit()
 
 	SetActorScale3D(FVector(0.3f, 0.3f, 0.1f));
 
-	SetColor();
+	Color = FLinearColor::MakeRandomColor();
+	SetColor(Color);
 }
 
 void AFruit::OverlapedWithSnakeHead(class ASnakeHeadPawn* SnakeHead)
 {
+	Destroy();
 	SnakeHead->EatFruit();
-
+	
 	ASnakeGameModeBase* GameMode = Cast<ASnakeGameModeBase>(GetWorld()->GetAuthGameMode());
 	if (GameMode)
 	{
-		GameMode->SpawnFruit();
-	}
-
-	Destroy();
+		GameMode->SpawnFruit();	
+	}	
 }
 
-void AFruit::SetColor()
+void AFruit::SetColor(FLinearColor FruitColor)
 {
-	Color = FLinearColor::MakeRandomColor();
-
 	MID = Mesh->CreateAndSetMaterialInstanceDynamic(0);
 	if (MID)
 	{
 		MID->SetVectorParameterValue("Color", Color);
 	}
-
 }

@@ -17,10 +17,12 @@ public:
 
 	virtual void OverlapedWithSnakeHead(class ASnakeHeadPawn* SnakeHead) override;
 
-	void SetColor();
+	void SetColor(FLinearColor FruitColor);
+
+	FLinearColor Color;
 
 private:
-	FLinearColor Color;
+	
 	UMaterialInstanceDynamic* MID;
 	
 };

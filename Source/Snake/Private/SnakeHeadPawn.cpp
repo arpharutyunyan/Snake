@@ -5,7 +5,7 @@
 #include <Components/StaticMeshComponent.h>
 #include <Components/SceneComponent.h>
 #include <Components/InputComponent.h>
-#include "Fruit.h"
+#include "Tail.h"
 #include "SnakeGameModeBase.h"
 
 DEFINE_LOG_CATEGORY_STATIC(HeadPawn, All, All);
@@ -48,8 +48,6 @@ ASnakeHeadPawn::ASnakeHeadPawn()
 void ASnakeHeadPawn::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	UE_LOG(HeadPawn, Display, TEXT("beginplay"));
 }
 
 // Called every frame
@@ -59,10 +57,18 @@ void ASnakeHeadPawn::Tick(float DeltaTime)
 
 	if (!MovementDiraction.IsZero())
 	{
-		const FVector NewLocation = GetActorLocation() + MovementDiraction * Speed * DeltaTime;
+		NewLocation = GetActorLocation() + MovementDiraction * Speed * DeltaTime;
 		SetActorLocation(NewLocation);
 	}
 
+
+	/*for (int32 i = 0; i < Tails.Num(); i++)
+	{
+		FVector CurrentLocation = Tails[i]->GetActorLocation();
+		Tails[i]->SetActorLocation(PreviousLocation);
+		PreviousLocation = CurrentLocation;
+	}*/
+	
 }
 
 // Called to bind functionality to input
@@ -91,6 +97,30 @@ void ASnakeHeadPawn::EatFruit()
 {
 	Score++;
 	UE_LOG(HeadPawn, Display, TEXT("Eat fruit score: %i"), Score);
+	UE_LOG(HeadPawn, Display, TEXT("Eat tails score: %i"), Tails.Num());
 
+	FActorSpawnParameters Params;
+	Params.Owner = this;
+	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+	FVector PreviousLocation = NewLocation;
+
+	ASnakeGameModeBase* GameMode = Cast<ASnakeGameModeBase>(GetWorld()->GetAuthGameMode());
+ 
+	SetActorLocation(GameMode->RandomSpawnLocation);
+
+	if (MovementDiraction.X != 0.0f)
+	{
+		TailSpawnLocation.X = PreviousLocation.X - MovementDiraction.X * 10;
+		TailSpawnLocation.Y = GetActorLocation().Y;
+	}
+	else if (MovementDiraction.Y != 0.0f)
+	{
+		TailSpawnLocation.Y = PreviousLocation.Y - MovementDiraction.Y * 10;
+		TailSpawnLocation.X = GetActorLocation().X;
+	}
+
+	TailSpawnLocation.Z = GetActorLocation().Z;
+
+	ATail* Tail = GetWorld()->SpawnActor<ATail>(ATail::StaticClass(), TailSpawnLocation, FRotator(0.0f, 0.0f, 0.0f), Params);
 }
-

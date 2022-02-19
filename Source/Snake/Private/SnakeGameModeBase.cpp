@@ -43,10 +43,10 @@ void ASnakeGameModeBase::SpawnFruit()
 {
 	float SpawnX = FMath::FRandRange(MinX, MaxX);
 	float SpawnY = FMath::FRandRange(MinY, MaxY);
-	FVector Location(SpawnX, SpawnY, SpawnZ);
+	RandomSpawnLocation = FVector(SpawnX, SpawnY, SpawnZ);
 		
-	FTransform SpawnLocation = FTransform(Location);
+	FTransform SpawnLocation = FTransform(RandomSpawnLocation);
 
-	AFruit* Fruit = GetWorld()->SpawnActor<AFruit>(AFruit::StaticClass(), SpawnLocation, FActorSpawnParameters());
-	Fruit->SetColor();
+	GetWorld()->SpawnActor<AFruit>(AFruit::StaticClass(), SpawnLocation, FActorSpawnParameters());
+
 }

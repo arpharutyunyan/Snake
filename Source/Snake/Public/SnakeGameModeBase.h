@@ -6,6 +6,8 @@
 #include "GameFramework/GameModeBase.h"
 #include "SnakeGameModeBase.generated.h"
 
+class AFruit;
+
 UCLASS()
 class SNAKE_API ASnakeGameModeBase : public AGameModeBase
 {
@@ -17,6 +19,9 @@ public:
 	void GameOver();
 	void SpawnFruit();
 
+	AFruit* Fruit;
+	FVector RandomSpawnLocation;
+
 protected:
 	virtual void StartPlay();
 
@@ -26,6 +31,6 @@ protected:
 	float MinY = -690.0f;
 	float MaxY = 690.0f;
 
-	float SpawnZ = 10.0f;
+	float SpawnZ = 0.0f;
 
 };

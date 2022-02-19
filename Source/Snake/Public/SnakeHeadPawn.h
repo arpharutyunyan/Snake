@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
+#include "Tail.h"
 #include "SnakeHeadPawn.generated.h"
 
 class USceneComponent;
@@ -13,6 +14,7 @@ class UCameraComponent;
 class USpringArmComponent;
 class ABaseStaticMeshActor;
 class AFruit;
+class ASnakeGameModeBase;
 
 UCLASS()
 class SNAKE_API ASnakeHeadPawn : public APawn
@@ -38,6 +40,7 @@ public:
 	UPROPERTY(VisibleAnywhere)
 		UMaterialInstanceDynamic* DynMaterial;
 
+
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -48,11 +51,13 @@ public:
 	void MoveRight(float Amount);
 	void EatFruit();
 
-	TArray<AFruit*> Tails;
+	TArray<ATail*> Tails;
 
 private:
 
+	FVector NewLocation;
 	FVector MovementDiraction;
+	FVector TailSpawnLocation;
 	float Speed = 200.0f;
 	int32 Score = 0;
 };
