@@ -58,6 +58,7 @@ private:
 	FVector NewLocation;
 	FVector MovementDiraction;
 	FVector TailSpawnLocation;
-	float Speed = 200.0f;
+	float Speed = 20.0f;
 	int32 Score = 0;
+	float Box;
 };

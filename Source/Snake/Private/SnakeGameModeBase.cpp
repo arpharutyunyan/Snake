@@ -23,6 +23,8 @@ void ASnakeGameModeBase::StartPlay()
 
 	ACameraActor* Camera = GetWorld()->SpawnActor<ACameraActor>(ACameraActor::StaticClass(), Location, Rotation, FActorSpawnParameters());
 
+	
+
 	APlayerController* Player = UGameplayStatics::GetPlayerController(this, 0);
 	if (Player)
 	{
@@ -35,7 +37,7 @@ void ASnakeGameModeBase::StartPlay()
 
 void ASnakeGameModeBase::GameOver()
 {
-	UGameplayStatics::SetGamePaused(this, true);
+	//UGameplayStatics::SetGamePaused(this, true);
 	UE_LOG(GameMode, Display, TEXT("Game over."));
 }
 

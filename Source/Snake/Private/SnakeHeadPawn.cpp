@@ -15,7 +15,7 @@ ASnakeHeadPawn::ASnakeHeadPawn()
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
+	PrimaryActorTick.TickInterval = 0.1;
 	UE_LOG(HeadPawn, Display, TEXT("constructor"));
 	SceneComponent = CreateDefaultSubobject<USceneComponent>("SceneComponent");
 	SetRootComponent(SceneComponent);
@@ -48,6 +48,8 @@ ASnakeHeadPawn::ASnakeHeadPawn()
 void ASnakeHeadPawn::BeginPlay()
 {
 	Super::BeginPlay();
+
+	Box = HeadMesh->GetStaticMesh()->GetBoundingBox().GetSize().X;
 }
 
 // Called every frame
@@ -57,18 +59,14 @@ void ASnakeHeadPawn::Tick(float DeltaTime)
 
 	if (!MovementDiraction.IsZero())
 	{
-		NewLocation = GetActorLocation() + MovementDiraction * Speed * DeltaTime;
-		SetActorLocation(NewLocation);
-	}
-
-
-	/*for (int32 i = 0; i < Tails.Num(); i++)
-	{
-		FVector CurrentLocation = Tails[i]->GetActorLocation();
-		Tails[i]->SetActorLocation(PreviousLocation);
-		PreviousLocation = CurrentLocation;
-	}*/
+		//NewLocation = GetActorLocation() + MovementDiraction * Box * GetActorScale3D().X * Speed * DeltaTime;
+		//SetActorLocation(NewLocation);
 	
+		AddActorWorldOffset(MovementDiraction * Box * GetActorScale3D().X);
+	}
+	
+	//UE_LOG(HeadPawn, Display, TEXT("%f"), Box);
+
 }
 
 // Called to bind functionality to input
@@ -103,7 +101,7 @@ void ASnakeHeadPawn::EatFruit()
 	Params.Owner = this;
 	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
-	FVector PreviousLocation = NewLocation;
+	FVector PreviousLocation = GetActorLocation();
 
 	ASnakeGameModeBase* GameMode = Cast<ASnakeGameModeBase>(GetWorld()->GetAuthGameMode());
  
@@ -111,16 +109,22 @@ void ASnakeHeadPawn::EatFruit()
 
 	if (MovementDiraction.X != 0.0f)
 	{
-		TailSpawnLocation.X = PreviousLocation.X - MovementDiraction.X * 10;
+		//TailSpawnLocation.X = PreviousLocation.X + MovementDiraction.X * 10;
+		TailSpawnLocation.X = PreviousLocation.X - MovementDiraction.X * Box * GetActorScale3D().X;
 		TailSpawnLocation.Y = GetActorLocation().Y;
 	}
 	else if (MovementDiraction.Y != 0.0f)
 	{
-		TailSpawnLocation.Y = PreviousLocation.Y - MovementDiraction.Y * 10;
+		//TailSpawnLocation.Y = PreviousLocation.Y + MovementDiraction.Y * 10;
+		TailSpawnLocation.Y = PreviousLocation.Y - MovementDiraction.Y * Box * GetActorScale3D().Y;
 		TailSpawnLocation.X = GetActorLocation().X;
 	}
 
 	TailSpawnLocation.Z = GetActorLocation().Z;
+	
+
+	//FVector SpawnLocation = GetActorLocation() + (MovementDiraction * Box * GetActorScale3D().X);
 
 	ATail* Tail = GetWorld()->SpawnActor<ATail>(ATail::StaticClass(), TailSpawnLocation, FRotator(0.0f, 0.0f, 0.0f), Params);
+	//ATail* Tail = GetWorld()->SpawnActor<ATail>(ATail::StaticClass(), SpawnLocation, FRotator(0.0f, 0.0f, 0.0f), Params);
 }
