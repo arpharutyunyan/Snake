@@ -57,12 +57,20 @@ void ASnakeHeadPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	FVector PreviousLocationForTail = GetActorLocation();
+
 	if (!MovementDiraction.IsZero())
 	{
 		//NewLocation = GetActorLocation() + MovementDiraction * Box * GetActorScale3D().X * Speed * DeltaTime;
 		//SetActorLocation(NewLocation);
 	
 		AddActorWorldOffset(MovementDiraction * Box * GetActorScale3D().X);
+		for (int i = 0; i < Tails.Num(); i++)
+		{
+			FVector CurrentLocation = Tails[i]->GetActorLocation();
+			Tails[i]->SetActorLocation(PreviousLocationForTail);
+			PreviousLocationForTail = CurrentLocation;
+		}
 	}
 	
 	//UE_LOG(HeadPawn, Display, TEXT("%f"), Box);
@@ -127,4 +135,6 @@ void ASnakeHeadPawn::EatFruit()
 
 	ATail* Tail = GetWorld()->SpawnActor<ATail>(ATail::StaticClass(), TailSpawnLocation, FRotator(0.0f, 0.0f, 0.0f), Params);
 	//ATail* Tail = GetWorld()->SpawnActor<ATail>(ATail::StaticClass(), SpawnLocation, FRotator(0.0f, 0.0f, 0.0f), Params);
+
+	Tails.Add(Tail);
 }
