@@ -14,8 +14,15 @@ class SNAKE_API ATail : public ADeadZone
 public:
 	ATail();
 
+	FLinearColor Color;
+	void SetColor(FLinearColor FruitColor);
+
 protected:
 	
 	virtual void BeginPlay() override;
+
+private:
+
+	UMaterialInstanceDynamic* MID;
 	
 };

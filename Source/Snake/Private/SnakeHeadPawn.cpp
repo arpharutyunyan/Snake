@@ -109,13 +109,13 @@ void ASnakeHeadPawn::EatFruit()
 	Params.Owner = this;
 	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
-	FVector PreviousLocation = GetActorLocation();
+	//FVector PreviousLocation = GetActorLocation();
 
-	ASnakeGameModeBase* GameMode = Cast<ASnakeGameModeBase>(GetWorld()->GetAuthGameMode());
+	//ASnakeGameModeBase* GameMode = Cast<ASnakeGameModeBase>(GetWorld()->GetAuthGameMode());
  
-	SetActorLocation(GameMode->RandomSpawnLocation);
+	//SetActorLocation(GameMode->RandomSpawnLocation);
 
-	if (MovementDiraction.X != 0.0f)
+	/*if (MovementDiraction.X != 0.0f)
 	{
 		//TailSpawnLocation.X = PreviousLocation.X + MovementDiraction.X * 10;
 		TailSpawnLocation.X = PreviousLocation.X - MovementDiraction.X * Box * GetActorScale3D().X;
@@ -128,13 +128,26 @@ void ASnakeHeadPawn::EatFruit()
 		TailSpawnLocation.X = GetActorLocation().X;
 	}
 
-	TailSpawnLocation.Z = GetActorLocation().Z;
+	TailSpawnLocation.Z = GetActorLocation().Z;*/
 	
-
+	if (Tails.Num() > 0)
+	{
+		Box = 300;
+		ATail* LastSpawnTail = Tails[Tails.Num() - 1];
+		LastSpawnTailLocation = (LastSpawnTail->GetActorLocation()) - MovementDiraction * Box * GetActorScale3D().X;
+		UE_LOG(HeadPawn, Display, TEXT("Box:    %f,     Scale:    %f,   X:   %f,     Y:    %f"), Box, GetActorScale3D().X, (LastSpawnTail->GetActorLocation()).X, (LastSpawnTail->GetActorLocation()).Y);
+	}
+	else
+	{
+		Box = 300;
+		LastSpawnTailLocation = GetActorLocation() - MovementDiraction * Box * GetActorScale3D().X;
+		UE_LOG(HeadPawn, Display, TEXT("else    X:   %f,     Y:    %f"), LastSpawnTailLocation.X, LastSpawnTailLocation.Y);
+	} //(1, 0,0) *256 *0.3
+	
 	//FVector SpawnLocation = GetActorLocation() + (MovementDiraction * Box * GetActorScale3D().X);
 
-	ATail* Tail = GetWorld()->SpawnActor<ATail>(ATail::StaticClass(), TailSpawnLocation, FRotator(0.0f, 0.0f, 0.0f), Params);
-	//ATail* Tail = GetWorld()->SpawnActor<ATail>(ATail::StaticClass(), SpawnLocation, FRotator(0.0f, 0.0f, 0.0f), Params);
+	//ATail* Tail = GetWorld()->SpawnActor<ATail>(ATail::StaticClass(), TailSpawnLocation, FRotator(0.0f, 0.0f, 0.0f), Params);
+	ATail* Tail = GetWorld()->SpawnActor<ATail>(ATail::StaticClass(), LastSpawnTailLocation, FRotator(0.0f, 0.0f, 0.0f), Params);
 
 	Tails.Add(Tail);
 }

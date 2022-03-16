@@ -61,4 +61,5 @@ private:
 	float Speed = 20.0f;
 	int32 Score = 0;
 	float Box;
+	FVector LastSpawnTailLocation;
 };
